@@ -55,18 +55,19 @@ jobs:
         run: |
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
           echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_ENV
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'GET' }}
         run: |
           echo ${{ steps.set_timestamp.outputs.timestamp }}
           rm -rf ./test_report/*
-          locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
+          locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html ./test_report/load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'POST' }}
         run: |
-          locust -f src/test_scripts/test_post_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html"
+          locust -f src/test_scripts/test_post_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html ./test_report/load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
 
       - name: Deploy report to GitHub Pages
         if: always()
@@ -83,4 +84,4 @@ jobs:
         with:
           name: hub-load-test-report
           path: |
-            ./test_report
+            ./test_report/
