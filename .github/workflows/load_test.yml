@@ -54,13 +54,13 @@ jobs:
         id: set_timestamp
         run: |
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
-          echo "TIMESTAMP=$TIMESTAMP"
-          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-          echo "::set-output name=timestamp::$(date +'%Y%m%d_%H%M%S')"
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'GET' }}
         run: |
+          echo ${{ steps.set_timestamp.outputs.timestamp }}
+          rm -rf ./test_report/*
           locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
 
       - name: Run Locust
