@@ -56,7 +56,7 @@ jobs:
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
           echo "TIMESTAMP=$TIMESTAMP"
           echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-          run: echo "::set-output name=timestamp::$(date +'%Y%m%d_%H%M%S')"
+          echo "::set-output name=timestamp::$(date +'%Y%m%d_%H%M%S')"
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'GET' }}
