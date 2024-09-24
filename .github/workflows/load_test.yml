@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requirements.txt
+          pip install -r requirements.txt
 
       - name: Run Locust
-        run: locust -f src/test_scripts/test_get_api.py --headless -u 100 -r 10 --run-time 20m --host https://api.simplehash.com
+        run: locust -f src/test_scripts/test_get_api.py --headless -u 1000 -r 10 --run-time 20m --host https://api.simplehash.com
