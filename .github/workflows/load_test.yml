@@ -33,7 +33,7 @@ on:
         default: '10m'
 
 jobs:
-  locust:
+  load-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -58,7 +58,7 @@ jobs:
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'GET' }}
-        run: ｜
+        run: |
           locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html "load-test-report_$timestamp.html"
 
       - name: Run Locust
