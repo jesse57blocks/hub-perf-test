@@ -38,10 +38,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
@@ -54,24 +54,26 @@ jobs:
         id: set_timestamp
         run: |
           TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
-          echo "timestamp=$TIMESTAMP" >> $GITHUB_ENV
+          echo "TIMESTAMP=$TIMESTAMP"
+          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          run: echo "::set-output name=timestamp::$(date +'%Y%m%d_%H%M%S')"
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'GET' }}
         run: |
-          locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html "load-test-report_$timestamp.html"
+          locust -f src/test_scripts/test_get_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
 
       - name: Run Locust
         if: ${{ github.event.inputs.requst-methold == 'POST' }}
         run: |
-          locust -f src/test_scripts/test_post_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html "load-test-report_$timestamp.html"
+          locust -f src/test_scripts/test_post_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html"
 
       - name: Deploy report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./load-test-report_$timestamp.html
+          publish_dir: ./test_report
           publish_branch: gh-pages
           keep_files: true
       
@@ -81,4 +83,4 @@ jobs:
         with:
           name: hub-load-test-report
           path: |
-            ./load-test-report_$timestamp.html
+            ./test_report
