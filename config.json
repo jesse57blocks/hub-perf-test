@@ -10,7 +10,7 @@
   "post": {
     "path": "https://edge.stg.storyprotocol.net/api/v1/assets",
     "headers": {
-      "X-API-KEY": "wbrz0IzjH4SLKtJxCjx4AZh6vrpmx-IKFuYMuL2WZSE",
+      "X-API-KEY": "MCFaiFLq9vq_tRRi-vcu_39QLh2aVdcFnu9bF7Fwyjg",
       "X-CHAIN": "story-testnet",
       "Content-Type": "application/json"
     },
