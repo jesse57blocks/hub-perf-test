@@ -2,8 +2,8 @@ name: Hub Load Test
 
 on:
   push:
-    branches:
-      - add-workflow
+    # branches:
+    #   - add-workflow
 
   workflow_dispatch:
     inputs:
@@ -15,16 +15,21 @@ on:
         options:
           - GET
           - POST
+          - POST_WITH_FILES
       host:
         description: 'Target host'
         required: true
         default: 'https://api.simplehash.com'
+        type: choice
+        options:
+          - https://api.simplehash.com
+          - https://edge.stg.storyprotocol.net
       number-of-users:
-        description: 'Peak concurrency'
+        description: 'Number of users（peak concurrency)'
         required: true
         default: '100'
       ramp-up:
-        description: 'users started/second'
+        description: 'Ramp up (users started/second)'
         required: true
         default: '2'
       run_time:
@@ -68,6 +73,13 @@ jobs:
         run: |
           rm -rf ./test_report/*
           locust -f src/test_scripts/test_post_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html ./test_report/load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
+        continue-on-error: true
+
+      - name: Run Locust
+        if: ${{ github.event.inputs.requst-methold == 'POST_WITH_FILES' }}
+        run: |
+          rm -rf ./test_report/*
+          locust -f src/test_scripts/test_upload_image.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html ./test_report/load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
         continue-on-error: true
 
       - name: Deploy report to GitHub Pages
