@@ -1,9 +1,22 @@
 {
-  "name": "hub-load-tests",
-  "version": "0.0.1",
+  "name": "hub-load-test",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:sepolia:smoke": "env TEST_ENV='sepolia' mocha -r ts-node/register -r mocha-steps --grep '\\[smoke\\]' './test/**/**/*.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "test:story:smoke": "env TEST_ENV='storyTestnet' mocha -r ts-node/register -r mocha-steps --grep '\\[smoke\\]' './test/**/**/*.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "test:sepolia:e2e": "env TEST_ENV='sepolia' mocha -r ts-node/register -r mocha-steps './test/**/e2e/*.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "test:story:e2e": "env TEST_ENV='storyTestnet' mocha -r ts-node/register -r mocha-steps './test/**/e2e/*.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "test:sepolia": "env TEST_ENV='sepolia' mocha -r ts-node/register -r mocha-steps './test/**/**/**.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "test:story": "env TEST_ENV='storyTestnet' mocha -r ts-node/register -r mocha-steps './test/**/**/mintAndRegisterIpAssetWithPilTerms.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'",
+    "open:report": "open test-reports/*.html",
+    "test:sepolia:open:report": "rm -rf test-reports && npm run test:sepolia && npm run open:report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/storyprotocol/sdk-e2e-tests.git"
+  },
   "dependencies": {
     "@story-protocol/core-sdk": "1.0.0-rc.22",
     "viem": "^2.8.12"
@@ -11,7 +24,26 @@
   "devDependencies": {
     "@types/benchmark": "^2.1.5",
     "@types/bip39": "^3.0.0",
+    "@types/chai": "^4.3.12",
+    "@types/chai-as-promised": "^7.1.6",
+    "@types/hdkey": "^2.0.3",
+    "@types/mocha": "^10.0.2",
+    "@types/mocha-steps": "^1.3.3",
+    "@types/mochawesome": "^6.2.4",
+    "@types/node": "^20.8.2",
+    "@types/sinon": "^10.0.18",
     "bip39": "^3.1.0",
+    "chai": "^4.3.10",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^8.50.0",
+    "hdkey": "^2.1.0",
+    "mocha": "^10.2.0",
+    "mocha-steps": "^1.3.0",
+    "mochawesome": "^7.1.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.2",
+    "typechain": "^8.3.1",
     "typescript": "^5.4.2"
   }
 }
