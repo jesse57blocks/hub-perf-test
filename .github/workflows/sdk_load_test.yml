@@ -1,0 +1,49 @@
+name: SDK Load Test
+
+on:
+  # push:
+  #  branches: [ "deploy-story-contracts" ]
+
+  # pull_request:
+  #   branches: [ "main" ]
+    
+  workflow_dispatch:
+    inputs:
+      running_amounts:
+        description: 'devnet01 is storyprotocol devnet; devnet02 is 57blocks devnet; testnet is storyprotocol partner-testnet'
+        required: false
+        default: 'devnet01'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+
+    steps:
+    - name: Check Out Repository Code
+      uses: actions/checkout@v4
+
+    - name: Run Load Test
+      run: |
+        npm install
+        npx ts-node ./sdk_load_test/load_create_ip_with_existing_collection.ts > ./test_report/load_test_out.log 2>&1
+
+    - name: Deploy report to GitHub Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./test_report
+        publish_branch: gh-pages
+        keep_files: true
+      
+    - name: Upload Test Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: hub-load-test-report
+        path: |
+            ./test_report/load_test_out.log
