@@ -11,8 +11,8 @@ const keyCollectionAddress: { [key: string]: any } = {};
 
 const sourceFilePath = './sdk_load_test/wallets_privateKeys.json'; 
 const destinationFilePath = './sdk_load_test/wallets_privateKey_test.json';
-const numberOfEntriesToCopy = 100;
-const numberOfExecutions = 20;
+const numberOfEntriesToCopy = 10;
+const numberOfExecutions = 10;
 
 async function createCollection(privateKey: string) {
     const testAccount = privateKeyToAccount(privateKey as Address);
@@ -46,8 +46,6 @@ async function createIpAssetWithExistingCollection(privateKey: string) {
 
     const testClient = StoryClient.newClient(config);
     const nftCollectionAddress = keyCollectionAddress[privateKey];
-    console.log(`NFT Collection address: ${nftCollectionAddress}`);
-
 
     const publicshAssetResponse =await testClient.ipAsset.mintAndRegisterIpAssetWithPilTerms({
         nftContract: nftCollectionAddress,
@@ -141,8 +139,8 @@ async function executePromises() {
         const totalRequests = durations.length;
         const longRequestPercentage = (longRequestCount / totalRequests) * 100;
 
-        console.log(`Number of requests taking longer than 6 seconds: ${longRequestCount}`);
-        console.log(`Percentage of requests taking longer than 6 seconds: ${longRequestPercentage.toFixed(2)}%`);
+        console.log(`Number of requests taking longer than 8 seconds: ${longRequestCount}`);
+        console.log(`Percentage of requests taking longer than 8 seconds: ${longRequestPercentage.toFixed(2)}%`);
 
         results.forEach((result, index) => {
             console.log(`Result of promise ${index + 1}:`, result);
@@ -187,11 +185,15 @@ function analyzeDurations(results: any[]) {
     // Total number of requests
     const totalRequests = results.length;
 
+    // Calculate percentage of long durations
+    const longDurationPercentage = (longDurationCount / totalRequests) * 100;
+    const shortDurationPercentage = (shortDurationCount / totalRequests) * 100;
+
     console.log(`Total Requests: ${totalRequests}`);
     console.log(`Total Duration: ${totalDuration} ms`);
     console.log(`Average Duration: ${averageDuration.toFixed(2)} ms`);
-    console.log(`Count of durations > 8000 ms: ${longDurationCount}`);
-    console.log(`Count of durations <= 8000 ms: ${shortDurationCount}`);
+    console.log(`Count of durations > 8000 ms: ${longDurationCount}, ${longDurationPercentage.toFixed(2)}%`);
+    console.log(`Count of durations <= 8000 ms: ${shortDurationCount}, ${shortDurationPercentage.toFixed(2)}%`);
 };
 
 // Main function to execute the merging and analysis
