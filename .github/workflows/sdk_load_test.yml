@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       running_amounts:
-        description: 'devnet01 is storyprotocol devnet; devnet02 is 57blocks devnet; testnet is storyprotocol partner-testnet'
+        description: 'runing amounts'
         required: false
         default: 'devnet01'
 
@@ -25,11 +25,6 @@ jobs:
     steps:
     - name: Check Out Repository Code
       uses: actions/checkout@v4
-    
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '21'
 
     - name: Install dependencies
       run: |
