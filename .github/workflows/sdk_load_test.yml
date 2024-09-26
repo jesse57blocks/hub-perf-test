@@ -25,10 +25,19 @@ jobs:
     steps:
     - name: Check Out Repository Code
       uses: actions/checkout@v4
+    
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21'
+
+    - name: Install dependencies
+      run: ｜
+        npm install
+        npm install --save @story-protocol/core-sdk viem@1.21.4
 
     - name: Run Load Test
       run: |
-        npm install
         npx ts-node ./sdk_load_test/load_create_ip_with_existing_collection.ts > ./test_report/load_test_out.log 2>&1
 
     - name: Deploy report to GitHub Pages
