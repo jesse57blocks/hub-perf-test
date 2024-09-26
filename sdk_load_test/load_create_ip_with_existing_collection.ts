@@ -11,8 +11,8 @@ const keyCollectionAddress: { [key: string]: any } = {};
 
 const sourceFilePath = './sdk_load_test/wallets_privateKeys.json'; 
 const destinationFilePath = './sdk_load_test/wallets_privateKey_test.json';
-const numberOfEntriesToCopy = 2;
-const numberOfExecutions = 2;
+const numberOfEntriesToCopy = 100;
+const numberOfExecutions = 20;
 
 async function createCollection(privateKey: string) {
     const testAccount = privateKeyToAccount(privateKey as Address);
