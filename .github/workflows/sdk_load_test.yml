@@ -32,7 +32,7 @@ jobs:
         node-version: '21'
 
     - name: Install dependencies
-      run: ｜
+      run: |
         npm install
         npm install --save @story-protocol/core-sdk viem@1.21.4
 
