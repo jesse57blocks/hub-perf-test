@@ -36,11 +36,14 @@ jobs:
         npm install
         npm install --save @story-protocol/core-sdk viem@1.21.4
 
+    - name: Compile TypeScript
+      run: npx tsc ./sdk_load_test/load_create_ip_with_existing_collection.ts
+
     - name: Run Load Test
       run: |
         npx ts-node ./sdk_load_test/load_create_ip_with_existing_collection.ts > >(tee ./test_report/load_test_out.log) 2>&1
       continue-on-error: true
-      
+
     - name: Deploy report to GitHub Pages
       if: always()
       uses: peaceiris/actions-gh-pages@v4
