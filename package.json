@@ -1,16 +1,17 @@
 {
   "name": "hub-load-tests",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test:sepolia:smoke": "env TEST_ENV='sepolia' mocha -r ts-node/register -r mocha-steps --grep '\\[smoke\\]' './test/**/**/*.test.ts' --timeout 240000 --reporter mochawesome --reporter-options reportDir='test-reports',reportFilename='[status]_[datetime]_sdk-test-report',timestamp='mm-dd-yyyy_HHMMss',reportTitle='SDK Test Report'"
-  },
+  "scripts": {},
   "dependencies": {
     "@story-protocol/core-sdk": "1.0.0-rc.22",
     "viem": "^2.8.12"
   },
   "devDependencies": {
-
+    "@types/benchmark": "^2.1.5",
+    "@types/bip39": "^3.0.0",
+    "bip39": "^3.1.0",
+    "typescript": "^5.4.2"
   }
 }
