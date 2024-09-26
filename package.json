@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "@story-protocol/core-sdk": "1.0.0-rc.22",
-    "viem": "^2.8.12"
+    "viem": "^2.8.12",
+    "ethers": "^6.13.0"
   },
   "devDependencies": {
     "@types/benchmark": "^2.1.5",
