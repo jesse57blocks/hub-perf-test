@@ -15,7 +15,7 @@ function generateWalletAddresses(filePath: string, num: number) {
     const file = fs.createWriteStream(filePath, { flags: 'a' });
     for (let i = 0; i < num; i++) {
         const wallet = node.deriveChild(i);
-        console.log(`Wallet ${i + 1}: ${wallet.address}`);
+        // console.log(`Wallet ${i + 1}: ${wallet.address}`);
         file.write(`"${wallet.address}"\n`);
     }
     file.end();
