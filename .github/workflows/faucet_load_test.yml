@@ -65,7 +65,7 @@ jobs:
         id: generate_wallets
         run: |
           num_users=${{ github.event.inputs.number-of-users }}
-          total_users=$num_users * 100
+          total_users=$((num_users * 100))
           echo "total_users=$total_users"
           npx ts-node ./faucet/generate_wallet_address.ts 100
 
