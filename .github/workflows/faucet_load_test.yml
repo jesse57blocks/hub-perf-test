@@ -1,0 +1,84 @@
+name: Faucet Load Test
+
+on:
+  push:
+    branches:
+      - faucet-load
+
+  workflow_dispatch:
+    inputs:
+      host:
+        description: 'Target host'
+        required: true
+        default: 'https://odyssey.faucet.story.foundation'
+      number-of-users:
+        description: 'Number of users（peak concurrency)'
+        required: true
+        default: '100'
+      ramp-up:
+        description: 'Ramp up (users started/second)'
+        required: true
+        default: '2'
+      run_time:
+        description: 'Run time (e.g. 20, 20s, 3m, 2h, etc.)'
+        required: true
+        default: '1m'
+
+jobs:
+  load-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [21.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm install
+      
+      - name: Set Timestamp
+        id: set_timestamp
+        run: |
+          TIMESTAMP=$(date +'%Y%m%d_%H%M%S')
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+
+      - name: Create Test Wallets
+        id: generate_wallets
+        run: |
+          num_users=${{ github.event.inputs.number-of-users }}
+          total_users=$((num_users * 100))
+          npx ts-node src/faucet/generate_wallet_address.ts $total_users
+
+      - name: Run Locust
+        run: |
+          rm -rf ./test_report/*
+          locust -f faucet/test_faucet_api.py --headless -u ${{ github.event.inputs.number-of-users }} -r ${{ github.event.inputs.ramp-up }} --run-time ${{ github.event.inputs.run_time }} --host ${{ github.event.inputs.host }} --html ./test_report/faucet-load-test-report_${{ steps.set_timestamp.outputs.timestamp }}.html
+        continue-on-error: true
+
+      - name: Deploy report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test_report
+          publish_branch: gh-pages
+          keep_files: true
+      
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hub-load-test-report
+          path: |
+            ./test_report
