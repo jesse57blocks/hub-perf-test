@@ -45,8 +45,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Install dependencies
+        run: |
           npm install
-      
+                
       - name: Set Timestamp
         id: set_timestamp
         run: |
@@ -57,8 +60,8 @@ jobs:
         id: generate_wallets
         run: |
           num_users=${{ github.event.inputs.number-of-users }}
-          total_users=$((num_users * 100))
-          npx ts-node src/faucet/generate_wallet_address.ts $total_users
+          total_users=$num_users * 100
+          npx ts-node ./faucet/generate_wallet_address.ts $total_users
 
       - name: Run Locust
         run: |
