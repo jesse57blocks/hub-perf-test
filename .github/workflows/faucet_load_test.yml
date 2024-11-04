@@ -67,7 +67,7 @@ jobs:
           num_users=${{ github.event.inputs.number-of-users }}
           total_users=$((num_users * 100))
           echo "total_users=$total_users"
-          npx ts-node ./faucet/generate_wallet_address.ts 100
+          npx ts-node ./faucet/generate_wallet_address.ts $total_users
 
       - name: Run Locust
         run: |
