@@ -18,7 +18,12 @@ jobs:
         run: |
           OUTPUT_VALUE="jacqueline-test-1"
           echo "OUTPUT_VALUE=${OUTPUT_VALUE}" >> $GITHUB_ENV
-          echo "::set-output name=generated_value::${OUTPUT_VALUE}"
+          echo "generated_value=${OUTPUT_VALUE}" >> $GITHUB_OUTPUT
 
     outputs:
+      run: |
+        echo "The generated value is: ${{ env.OUTPUT_VALUE }}"
+        echo "The generated value is: ${{ steps.generate_output.outputs.generated_value }}"
+
+      output_value: ${{ env.OUTPUT_VALUE }}
       generated_value: ${{ steps.generate_output.outputs.generated_value }}
