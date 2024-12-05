@@ -3,6 +3,8 @@ name: First Workflow
 on:
   workflow_dispatch:  # This allows you to manually trigger the workflow
 
+  workflow_call:
+
 jobs:
   build:
     runs-on: ubuntu-latest
