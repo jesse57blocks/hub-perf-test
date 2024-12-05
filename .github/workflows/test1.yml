@@ -20,10 +20,14 @@ jobs:
           echo "OUTPUT_VALUE=${OUTPUT_VALUE}" >> $GITHUB_ENV
           echo "generated_value=${OUTPUT_VALUE}" >> $GITHUB_OUTPUT
 
+          echo "${{ env.OUTPUT_VALUE }}"
+      
+      - name: echo output
+        id: echo_output
+        run: |
+          echo "${{ steps.generate_output.outputs.generate_output}}"
+          echo "${{ env.OUTPUT_VALUE}}"
+    
     outputs:
-      run: |
-        echo "The generated value is: ${{ env.OUTPUT_VALUE }}"
-        echo "The generated value is: ${{ steps.generate_output.outputs.generated_value }}"
-
       output_value: ${{ env.OUTPUT_VALUE }}
       generated_value: ${{ steps.generate_output.outputs.generated_value }}
