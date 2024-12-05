@@ -16,4 +16,5 @@ jobs:
     steps:
       - name: Access Output from First Workflow
         run: |
+          echo ${{ needs.run_first_workflow.outputs }}
           echo "The generated value from the first workflow is: ${{ needs.run_first_workflow.outputs.generated_value }}"
