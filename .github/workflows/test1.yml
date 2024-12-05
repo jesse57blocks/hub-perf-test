@@ -1,0 +1,22 @@
+name: First Workflow
+
+on:
+  workflow_dispatch:  # This allows you to manually trigger the workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate Output
+        id: generate_output
+        run: |
+          OUTPUT_VALUE="jacqueline-test-1"
+          echo "OUTPUT_VALUE=${OUTPUT_VALUE}" >> $GITHUB_ENV
+          echo "::set-output name=generated_value::${OUTPUT_VALUE}"
+
+    outputs:
+      generated_value: ${{ steps.generate_output.outputs.generated_value }}

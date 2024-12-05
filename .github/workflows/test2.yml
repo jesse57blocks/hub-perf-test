@@ -1,0 +1,18 @@
+name: Second Workflow
+
+on:
+  workflow_dispatch:  # This allows you to manually trigger the workflow
+
+jobs:
+  run_first_workflow:
+    name: Run First Workflow
+    uses: jacqueline-57b/hub-perf-test/.github/workflows/test1.yml@main
+
+
+  use_output:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Access Output from First Workflow
+        run: |
+          echo "The generated value from the first workflow is: ${{ github.event.workflow_run.outputs.generated_value }}"
