@@ -11,8 +11,9 @@ jobs:
 
   use_output:
     runs-on: ubuntu-latest
+    needs: run_first_workflow
 
     steps:
       - name: Access Output from First Workflow
         run: |
-          echo "The generated value from the first workflow is: ${{ github.event.workflow_run.outputs.generated_value }}"
+          echo "The generated value from the first workflow is: ${{ needs.run_first_workflow.outputs.generated_value }}"
