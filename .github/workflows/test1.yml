@@ -25,8 +25,8 @@ jobs:
       - name: echo output
         id: echo_output
         run: |
-          echo "${{ steps.generate_output.outputs.generate_output}}"
-          echo "${{ env.OUTPUT_VALUE}}"
+          echo "steps.outputs: ${{ steps.generate_output.outputs.generated_value}}"
+          echo "env.outputs: ${{ env.OUTPUT_VALUE}}"
     
     outputs:
       output_value: ${{ env.OUTPUT_VALUE }}
