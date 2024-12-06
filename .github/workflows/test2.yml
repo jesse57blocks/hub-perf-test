@@ -5,9 +5,30 @@ on:
 
 jobs:
   run_first_workflow:
-    name: Run First Workflow
-    uses: jacqueline-57b/hub-perf-test/.github/workflows/test1.yml@main
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Generate Output
+        id: generate_output
+        run: |
+          OUTPUT_VALUE="jacqueline-test-1"
+          echo "OUTPUT_VALUE=${OUTPUT_VALUE}" >> $GITHUB_ENV
+          echo "generated_value=${OUTPUT_VALUE}" >> $GITHUB_OUTPUT
+
+          echo "${{ env.OUTPUT_VALUE }}"
+      
+      - name: echo output
+        id: echo_output
+        run: |
+          echo "steps.outputs: ${{ steps.generate_output.outputs.generated_value}}"
+          echo "env.outputs: ${{ env.OUTPUT_VALUE}}"
+    
+    outputs:
+      output_value: ${{ env.OUTPUT_VALUE }}
+      generated_value: ${{ steps.generate_output.outputs.generated_value }}
 
   use_output:
     runs-on: ubuntu-latest
