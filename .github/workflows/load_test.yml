@@ -88,7 +88,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./test_report
-          publish_branch: gh-pages
+          publish_branch: dev
           keep_files: true
       
       - name: Upload Test Report

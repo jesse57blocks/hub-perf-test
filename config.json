@@ -1,10 +1,11 @@
 {
   "url": "",
   "get": {
-    "path": "https://api.simplehash.com/api/v0/nfts/story-testnet/0x59a0B4E4074B2DB51B218A7cAb3B4F4715C8b360/180380",
+    "path": "https://edge.stg.storyprotocol.net/api/v2/assets/0x8ee52266033C2dA3F4f2eD2B9cF70e74f9957BF5/metadata",
     "headers": {
-      "X-API-KEY": "storyprotoco_sk_3fclYjm1pegXwL6n5PX",
-      "Content-Type": "application/json"
+      "X-API-KEY": "eQpcXMVMnZLslfZlq3pTeZQCMJvqfSgQROMTfd3pVts",
+      "Content-Type": "application/json",
+      "x-chain": "odyssey-testnet"
     }
   },
   "post": {
